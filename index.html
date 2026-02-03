@@ -4,75 +4,71 @@
   <meta charset="UTF-8">
   <title>Will You Be My Valentine?</title>
 
-  <!-- Cute Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       height: 100vh;
+      background: radial-gradient(circle at top, #ffe1ec, #ffd1dc);
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #ffd6e8, #fff1f6);
       font-family: 'Poppins', sans-serif;
       overflow: hidden;
     }
 
     /* Floating hearts */
-    body::before {
-      content: "💗 💕 💖 💘 💝";
+    .bg-heart {
       position: absolute;
-      font-size: 40px;
-      opacity: 0.15;
-      animation: float 12s linear infinite;
+      font-size: 22px;
+      opacity: 0.2;
+      animation: floatUp linear infinite;
     }
 
-    @keyframes float {
-      0% { transform: translateY(100vh); }
-      100% { transform: translateY(-120vh); }
+    @keyframes floatUp {
+      from { transform: translateY(110vh); }
+      to { transform: translateY(-120vh); }
     }
 
+    /* MAIN MODAL */
     .modal {
-      background: #ffffff;
-      padding: 40px 45px;
-      border-radius: 28px;
-      text-align: center;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(16px);
+      padding: 40px;
+      border-radius: 30px;
       width: 360px;
-      box-shadow: 0 30px 60px rgba(255, 105, 135, 0.35);
-      animation: pop 0.7s ease;
-      position: relative;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(255, 80, 120, 0.35);
+      animation: popIn 0.8s ease;
+      z-index: 2;
     }
 
-    @keyframes pop {
-      0% { transform: scale(0.7); opacity: 0; }
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
 
     .heart {
-      font-size: 48px;
+      font-size: 52px;
       animation: heartbeat 1.6s infinite;
-      margin-bottom: 12px;
     }
 
     @keyframes heartbeat {
       0% { transform: scale(1); }
-      30% { transform: scale(1.3); }
+      30% { transform: scale(1.4); }
       60% { transform: scale(1); }
     }
 
     h1 {
-      color: #ff4d88;
-      font-size: 26px;
-      margin-bottom: 8px;
+      color: #ff3f7f;
+      margin: 12px 0;
     }
 
     p {
-      color: #777;
+      color: #666;
       font-size: 15px;
       margin-bottom: 30px;
     }
@@ -83,7 +79,7 @@
     }
 
     button {
-      padding: 12px 32px;
+      padding: 12px 34px;
       border: none;
       border-radius: 999px;
       font-size: 16px;
@@ -94,56 +90,98 @@
     }
 
     #yesBtn {
-      background: linear-gradient(135deg, #ff5f9e, #ff85b3);
+      background: linear-gradient(135deg, #ff4d88, #ff77aa);
       color: white;
-      left: 35px;
-      box-shadow: 0 10px 20px rgba(255, 95, 158, 0.4);
+      left: 30px;
+      box-shadow: 0 12px 25px rgba(255, 77, 136, 0.5);
     }
 
     #yesBtn:hover {
-      transform: scale(1.15);
+      transform: scale(1.2);
     }
 
     #noBtn {
-      background: #f3f3f3;
+      background: #f2f2f2;
       color: #888;
-      right: 35px;
+      right: 30px;
     }
 
-    /* Final screen */
-    .final-screen {
-      height: 100vh;
-      width: 100vw;
+    /* FINAL OVERLAY */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #ffd6e8, #fff1f6);
-      animation: fade 1s ease;
+      animation: fadeIn 0.8s ease;
+      z-index: 5;
     }
 
-    @keyframes fade {
+    @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
 
-    .final-box {
-      background: white;
-      padding: 45px;
-      border-radius: 30px;
+    .popup {
+      background: linear-gradient(135deg, #fff0f6, #ffffff);
+      padding: 55px;
+      border-radius: 40px;
+      width: 430px;
       text-align: center;
-      box-shadow: 0 30px 60px rgba(255, 105, 135, 0.35);
+      position: relative;
+      box-shadow: 0 40px 120px rgba(255, 80, 120, 0.6);
+      animation: glowPop 1s ease;
     }
 
-    .final-box h1 {
-      font-size: 46px;
-      color: #ff4d88;
+    @keyframes glowPop {
+      0% { transform: scale(0.5); opacity: 0; }
+      70% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .popup::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 40px;
+      background: linear-gradient(120deg, #ff5f9e, #ffc3d8, #ff5f9e);
+      filter: blur(18px);
+      animation: borderGlow 4s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes borderGlow {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .popup h1 {
+      font-size: 48px;
+      color: #ff2f6f;
       margin-bottom: 15px;
     }
 
-    .final-box p {
+    .typewriter {
       font-size: 22px;
       color: #555;
-      line-height: 1.5;
+      line-height: 1.6;
+      white-space: pre-line;
+      min-height: 90px;
+    }
+
+    /* Confetti hearts */
+    .confetti {
+      position: fixed;
+      font-size: 20px;
+      animation: fall 4s linear forwards;
+      z-index: 10;
+    }
+
+    @keyframes fall {
+      from { transform: translateY(-10vh); opacity: 1; }
+      to { transform: translateY(110vh); opacity: 0; }
     }
   </style>
 </head>
@@ -153,36 +191,79 @@
   <div class="modal">
     <div class="heart">💖</div>
     <h1>Will you be my Valentine?</h1>
-    <p>You make my heart smile every day.</p>
+    <p>You make my heart smile every single day.</p>
 
     <div class="buttons">
-      <button id="yesBtn" onclick="sayYes()">Yes 💕</button>
+      <button id="yesBtn">Yes 💕</button>
       <button id="noBtn">No 😜</button>
     </div>
   </div>
 
+  <!-- Soft romantic music (plays after click) -->
+  <audio id="music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const music = document.getElementById("music");
 
     noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * 240 - 120;
-      const y = Math.random() * 120 - 60;
+      const x = Math.random() * 260 - 130;
+      const y = Math.random() * 140 - 70;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
     });
 
-    function sayYes() {
-      document.body.innerHTML = `
-        <div class="final-screen">
-          <div class="final-box">
+    yesBtn.addEventListener("click", () => {
+      music.play();
+      showFinalPopup();
+      launchConfetti();
+    });
+
+    function showFinalPopup() {
+      document.body.innerHTML += `
+        <div class="overlay">
+          <div class="popup">
             <h1>YAY!!! 💕</h1>
-            <p>
-              <strong>I love you, Kuku 💖</strong><br>
-              Let’s make our Udaipur trip full of love,<br>
-              laughter, and unforgettable memories ✨
-            </p>
+            <div class="typewriter" id="typeText"></div>
           </div>
         </div>
       `;
+
+      typeText(
+        "I love you, Kuku 💖\nLet’s make our Udaipur trip full of love,\nlaughter, and unforgettable memories ✨",
+        document.getElementById("typeText")
+      );
+    }
+
+    function typeText(text, element, i = 0) {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        setTimeout(() => typeText(text, element, i + 1), 45);
+      }
+    }
+
+    function launchConfetti() {
+      for (let i = 0; i < 40; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.textContent = "💖";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.animationDuration = 3 + Math.random() * 2 + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 5000);
+      }
+    }
+
+    // background floating hearts
+    for (let i = 0; i < 25; i++) {
+      const h = document.createElement("div");
+      h.className = "bg-heart";
+      h.textContent = "💗";
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.animationDuration = 6 + Math.random() * 6 + "s";
+      document.body.appendChild(h);
     }
   </script>
 
