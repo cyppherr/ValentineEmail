@@ -155,23 +155,27 @@
     });
 
     function showPopup() {
-      document.body.innerHTML += `
-        <div class="overlay">
-          <div class="popup">
-            <div class="photo-wrapper">
-              <img src="image.jpeg" alt="Us ❤️">
-            </div>
-            <h1>YAY!!! 💕</h1>
-            <div class="typewriter" id="text"></div>
-          </div>
+    const overlay = document.createElement("div");
+    overlay.className = "overlay";
+  
+    overlay.innerHTML = `
+      <div class="popup">
+        <div class="photo-wrapper">
+          <img src="./image.jpeg" alt="Us ❤️" loading="eager">
         </div>
-      `;
+        <h1>YAY!!! 💕</h1>
+        <div class="typewriter" id="text"></div>
+      </div>
+    `;
+  
+    document.body.appendChild(overlay);
+  
+    typeText(
+      "I love you, Kuku 💖\nAnd now you’re officially stuck with me 😌\nLet’s go to Udaipur, get lost, laugh a lot,\nand make memories we’ll keep teasing each other about forever ✨",
+      document.getElementById("text")
+    );
+  }
 
-      typeText(
-        "I love you, Kuku 💖\nAnd now you’re officially stuck with me 😌\nLet’s go to Udaipur, get lost, laugh a lot,\nand make memories we’ll keep teasing each other about forever ✨",
-        document.getElementById("text")
-      );
-    }
 
     function typeText(text, element) {
       let i = 0;
