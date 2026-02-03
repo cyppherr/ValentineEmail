@@ -2,37 +2,70 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Will You Be My Valentine?</title>
+  <title>Be My Valentine 💖</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     * {
       box-sizing: border-box;
-      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont;
+      font-family: "Poppins", system-ui, -apple-system;
     }
 
     body {
       margin: 0;
       height: 100vh;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      background: radial-gradient(circle at top, #ffd6e0, #ff8fab);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
 
-    /* Question box */
-    .question-box {
-      background: white;
-      padding: 28px 24px;
-      border-radius: 22px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      width: min(90vw, 380px);
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 18px;
+      animation: floatUp linear forwards;
+      pointer-events: none;
     }
 
-    .question-box h1 {
-      margin: 0 0 18px;
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh) scale(1.6);
+        opacity: 0;
+      }
+    }
+
+    /* Main question card */
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 28px 26px;
+      border-radius: 26px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      width: min(90vw, 380px);
+      animation: popIn 0.8s ease;
+    }
+
+    @keyframes popIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    h1 {
+      margin: 0 0 20px;
       font-size: 22px;
     }
 
@@ -42,21 +75,25 @@
     }
 
     button {
-      padding: 10px 22px;
+      padding: 11px 26px;
       font-size: 16px;
-      border: none;
       border-radius: 999px;
+      border: none;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: transform 0.25s ease;
     }
 
     #yesBtn {
-      background: #ff4d6d;
+      background: linear-gradient(135deg, #ff4d6d, #ff758f);
       color: white;
     }
 
+    #yesBtn:hover {
+      transform: scale(1.08);
+    }
+
     #noBtn {
-      background: #ddd;
+      background: #eee;
       color: #333;
       position: absolute;
       right: 0;
@@ -66,39 +103,40 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.55);
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
+      z-index: 999;
     }
 
     .popup {
-      background: white;
-      width: min(94vw, 440px);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      width: min(94vw, 460px);
       max-height: 92vh;
-      padding: 20px;
-      border-radius: 22px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+      padding: 22px;
+      border-radius: 28px;
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.4);
       text-align: center;
       overflow: auto;
-      animation: popupIn 0.6s ease;
+      animation: popupReveal 0.7s ease;
     }
 
-    @keyframes popupIn {
+    @keyframes popupReveal {
       from {
-        transform: scale(0.9);
+        transform: translateY(30px) scale(0.95);
         opacity: 0;
       }
       to {
-        transform: scale(1);
+        transform: translateY(0) scale(1);
         opacity: 1;
       }
     }
 
     .photo-wrapper {
       width: 100%;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
 
     .photo-wrapper img {
@@ -106,15 +144,14 @@
       height: auto;
       max-height: 60vh;
       object-fit: contain;
-      border-radius: 16px;
-      display: block;
-      animation: softReveal 1.2s ease-out forwards;
+      border-radius: 20px;
+      animation: softReveal 1.2s ease forwards;
     }
 
     @keyframes softReveal {
       from {
         opacity: 0;
-        transform: scale(0.97);
+        transform: scale(0.96);
       }
       to {
         opacity: 1;
@@ -122,14 +159,14 @@
       }
     }
 
-    .popup h1 {
+    .popup h2 {
       margin: 12px 0;
       font-size: 22px;
     }
 
     .typewriter {
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.7;
       white-space: pre-line;
     }
   </style>
@@ -137,7 +174,7 @@
 
 <body>
 
-  <div class="question-box">
+  <div class="card">
     <h1>Will you be my Valentine? 💌</h1>
     <div class="buttons">
       <button id="yesBtn" onclick="showPopup()">Yes 💕</button>
@@ -150,46 +187,57 @@
 
     noBtn.addEventListener("mouseenter", () => {
       const x = Math.random() * 160 - 80;
-      const y = Math.random() * 40 - 20;
+      const y = Math.random() * 50 - 25;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
     });
 
     function showPopup() {
-    const overlay = document.createElement("div");
-    overlay.className = "overlay";
-  
-    overlay.innerHTML = `
-      <div class="popup">
-        <div class="photo-wrapper">
-          <img src="./image.jpeg" alt="Us ❤️" loading="eager">
+      document.body.innerHTML += `
+        <div class="overlay">
+          <div class="popup">
+            <div class="photo-wrapper">
+              <img src="./image.jpeg" alt="Us ❤️">
+            </div>
+            <h2>YAY!!! 💕</h2>
+            <div class="typewriter" id="text"></div>
+          </div>
         </div>
-        <h1>YAY!!! 💕</h1>
-        <div class="typewriter" id="text"></div>
-      </div>
-    `;
-  
-    document.body.appendChild(overlay);
-  
-    typeText(
-      "I love you, Kuku 💖\nAnd now you’re officially stuck with me 😌\nLet’s go to Udaipur, get lost, laugh a lot,\nand make memories we’ll keep teasing each other about forever ✨",
-      document.getElementById("text")
-    );
-  }
+      `;
 
+      startHearts();
+      typeText(
+        "I love you, Kuku 💖\nAnd now you’re officially stuck with me 😌\nLet’s go to Udaipur, get lost, laugh a lot,\nand make memories we’ll keep teasing each other about forever ✨",
+        document.getElementById("text")
+      );
+    }
 
-    function typeText(text, element) {
+    function typeText(text, el) {
       let i = 0;
       const speed = 35;
 
-      function typing() {
+      function type() {
         if (i < text.length) {
-          element.innerHTML += text.charAt(i);
+          el.innerHTML += text.charAt(i);
           i++;
-          setTimeout(typing, speed);
+          setTimeout(type, speed);
         }
       }
+      type();
+    }
 
-      typing();
+    function startHearts() {
+      const interval = setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 5000);
+      }, 300);
+
+      setTimeout(() => clearInterval(interval), 6000);
     }
   </script>
 
