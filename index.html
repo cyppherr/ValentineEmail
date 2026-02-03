@@ -62,16 +62,8 @@
       60% { transform: scale(1); }
     }
 
-    h1 {
-      color: #ff3f7f;
-      margin: 12px 0;
-    }
-
-    p {
-      color: #666;
-      font-size: 15px;
-      margin-bottom: 30px;
-    }
+    h1 { color: #ff3f7f; margin: 12px 0; }
+    p { color: #666; font-size: 15px; margin-bottom: 28px; }
 
     .buttons {
       position: relative;
@@ -96,9 +88,7 @@
       box-shadow: 0 12px 25px rgba(255, 77, 136, 0.5);
     }
 
-    #yesBtn:hover {
-      transform: scale(1.2);
-    }
+    #yesBtn:hover { transform: scale(1.2); }
 
     #noBtn {
       background: #f2f2f2;
@@ -110,7 +100,7 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.3);
+      background: rgba(0,0,0,0.35);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -125,9 +115,9 @@
 
     .popup {
       background: linear-gradient(135deg, #fff0f6, #ffffff);
-      padding: 55px;
+      padding: 45px;
       border-radius: 40px;
-      width: 430px;
+      width: 440px;
       text-align: center;
       position: relative;
       box-shadow: 0 40px 120px rgba(255, 80, 120, 0.6);
@@ -140,38 +130,45 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    .popup::before {
-      content: "";
-      position: absolute;
-      inset: -3px;
-      border-radius: 40px;
-      background: linear-gradient(120deg, #ff5f9e, #ffc3d8, #ff5f9e);
-      filter: blur(18px);
-      animation: borderGlow 4s linear infinite;
-      z-index: -1;
+    /* BLUR → REVEAL IMAGE */
+    .photo-wrapper {
+      overflow: hidden;
+      border-radius: 28px;
+      margin-bottom: 22px;
     }
 
-    @keyframes borderGlow {
-      0% { opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { opacity: 0.6; }
+    .photo-wrapper img {
+      width: 100%;
+      filter: blur(14px) brightness(0.9);
+      transform: scale(1.1);
+      animation: revealPhoto 2.2s ease forwards;
+    }
+
+    @keyframes revealPhoto {
+      0% {
+        filter: blur(14px) brightness(0.9);
+        transform: scale(1.1);
+      }
+      100% {
+        filter: blur(0) brightness(1);
+        transform: scale(1);
+      }
     }
 
     .popup h1 {
-      font-size: 48px;
+      font-size: 44px;
       color: #ff2f6f;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .typewriter {
-      font-size: 22px;
+      font-size: 20px;
       color: #555;
       line-height: 1.6;
       white-space: pre-line;
       min-height: 90px;
     }
 
-    /* Confetti hearts */
     .confetti {
       position: fixed;
       font-size: 20px;
@@ -191,7 +188,7 @@
   <div class="modal">
     <div class="heart">💖</div>
     <h1>Will you be my Valentine?</h1>
-    <p>You make my heart smile every single day.</p>
+    <p>Be honest… but also choose wisely 😌</p>
 
     <div class="buttons">
       <button id="yesBtn">Yes 💕</button>
@@ -199,7 +196,6 @@
     </div>
   </div>
 
-  <!-- Soft romantic music (plays after click) -->
   <audio id="music" loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   </audio>
@@ -217,34 +213,40 @@
 
     yesBtn.addEventListener("click", () => {
       music.play();
-      showFinalPopup();
-      launchConfetti();
+      showPopup();
+      confetti();
     });
 
-    function showFinalPopup() {
+    function showPopup() {
       document.body.innerHTML += `
         <div class="overlay">
           <div class="popup">
+            <div class="photo-wrapper">
+              <img src="photo.jpeg" alt="Us ❤️">
+            </div>
             <h1>YAY!!! 💕</h1>
-            <div class="typewriter" id="typeText"></div>
+            <div class="typewriter" id="text"></div>
           </div>
         </div>
       `;
 
-        typeText(
-          "I love you, Kuku 💖\nAnd now you’re officially stuck with me 😌\nLet’s go to Udaipur, get lost, laugh a lot,\nand make memories we’ll keep teasing each other about forever ✨",
-           document.getElementById("typeText")
-       );
+      typeText(
+`I love you, Kuku 💖
+And now you’re officially stuck with me 😌
+Let’s go to Udaipur, get lost, laugh a lot,
+and make memories we’ll keep teasing each other about forever ✨`,
+        document.getElementById("text")
+      );
     }
 
-    function typeText(text, element, i = 0) {
+    function typeText(text, el, i = 0) {
       if (i < text.length) {
-        element.textContent += text.charAt(i);
-        setTimeout(() => typeText(text, element, i + 1), 45);
+        el.textContent += text.charAt(i);
+        setTimeout(() => typeText(text, el, i + 1), 40);
       }
     }
 
-    function launchConfetti() {
+    function confetti() {
       for (let i = 0; i < 40; i++) {
         const c = document.createElement("div");
         c.className = "confetti";
@@ -256,7 +258,6 @@
       }
     }
 
-    // background floating hearts
     for (let i = 0; i < 25; i++) {
       const h = document.createElement("div");
       h.className = "bg-heart";
