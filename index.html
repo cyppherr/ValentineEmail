@@ -21,7 +21,7 @@
       overflow: hidden;
     }
 
-    /* Floating hearts */
+    /* ❤️ Floating hearts */
     .heart {
       position: fixed;
       bottom: -20px;
@@ -41,16 +41,32 @@
       }
     }
 
-    /* Main question card */
+    /* 💌 First dialog card */
     .card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      padding: 28px 26px;
-      border-radius: 26px;
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      padding: 34px 28px 30px;
+      border-radius: 30px;
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
       text-align: center;
-      width: min(90vw, 380px);
-      animation: popIn 0.8s ease;
+      width: min(92vw, 400px);
+      animation:
+        popIn 0.7s ease,
+        floatCard 6s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+
+    /* Subtle floating */
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Tiny tilt on hover */
+    .card:hover {
+      transform: translateY(-10px) rotateX(2deg) rotateY(-2deg);
     }
 
     @keyframes popIn {
@@ -64,42 +80,60 @@
       }
     }
 
-    h1 {
-      margin: 0 0 20px;
-      font-size: 22px;
+    .card h1 {
+      margin: 0 0 26px;
+      font-size: 24px;
+      font-weight: 600;
     }
 
     .buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
       position: relative;
-      height: 60px;
     }
 
-    button {
-      padding: 11px 26px;
+    .buttons button {
+      padding: 12px 28px;
       font-size: 16px;
       border-radius: 999px;
       border: none;
       cursor: pointer;
-      transition: transform 0.25s ease;
+      min-width: 120px;
+      transition: all 0.25s ease;
     }
 
+    /* ❤️ YES BUTTON */
     #yesBtn {
-      background: linear-gradient(135deg, #ff4d6d, #ff758f);
+      background: linear-gradient(135deg, #ff4d6d, #ff8fab);
       color: white;
+      box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+      animation: heartbeat 1.8s infinite;
+    }
+
+    /* Heartbeat pulse */
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      14% { transform: scale(1.08); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.08); }
+      70% { transform: scale(1); }
     }
 
     #yesBtn:hover {
-      transform: scale(1.08);
+      transform: scale(1.12);
+      box-shadow: 0 16px 34px rgba(255, 77, 109, 0.6);
     }
 
+    /* 🙃 NO BUTTON */
     #noBtn {
-      background: #eee;
-      color: #333;
-      position: absolute;
-      right: 0;
+      background: #f1f1f1;
+      color: #555;
+      position: relative;
     }
 
-    /* Overlay popup */
+    /* 🌙 Overlay popup */
     .overlay {
       position: fixed;
       inset: 0;
@@ -111,16 +145,16 @@
     }
 
     .popup {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
       width: min(94vw, 460px);
       max-height: 92vh;
-      padding: 22px;
+      padding: 24px;
       border-radius: 28px;
       box-shadow: 0 35px 80px rgba(0, 0, 0, 0.4);
       text-align: center;
       overflow: auto;
-      animation: popupReveal 0.7s ease;
+      animation: popupReveal 0.6s ease;
     }
 
     @keyframes popupReveal {
@@ -174,6 +208,7 @@
 
 <body>
 
+  <!-- 💌 First dialog -->
   <div class="card">
     <h1>Will you be my Valentine? 💌</h1>
     <div class="buttons">
@@ -186,25 +221,28 @@
     const noBtn = document.getElementById("noBtn");
 
     noBtn.addEventListener("mouseenter", () => {
-      const x = Math.random() * 160 - 80;
-      const y = Math.random() * 50 - 25;
+      const x = Math.random() * 140 - 70;
+      const y = Math.random() * 40 - 20;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
     });
 
     function showPopup() {
-      document.body.innerHTML += `
-        <div class="overlay">
-          <div class="popup">
-            <div class="photo-wrapper">
-              <img src="./image.jpeg" alt="Us ❤️">
-            </div>
-            <h2>YAY!!! 💕</h2>
-            <div class="typewriter" id="text"></div>
+      const overlay = document.createElement("div");
+      overlay.className = "overlay";
+
+      overlay.innerHTML = `
+        <div class="popup">
+          <div class="photo-wrapper">
+            <img src="./image.jpeg" alt="Us ❤️">
           </div>
+          <h2>YAY!!! 💕</h2>
+          <div class="typewriter" id="text"></div>
         </div>
       `;
 
+      document.body.appendChild(overlay);
       startHearts();
+
       typeText(
         "I love you, Kuku 💖\nAnd now you’re officially stuck with me 😌\nLet’s go to Udaipur, get lost, laugh a lot,\nand make memories we’ll keep teasing each other about forever ✨",
         document.getElementById("text")
@@ -214,15 +252,12 @@
     function typeText(text, el) {
       let i = 0;
       const speed = 35;
-
-      function type() {
+      (function type() {
         if (i < text.length) {
-          el.innerHTML += text.charAt(i);
-          i++;
+          el.innerHTML += text.charAt(i++);
           setTimeout(type, speed);
         }
-      }
-      type();
+      })();
     }
 
     function startHearts() {
@@ -233,9 +268,8 @@
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.animationDuration = Math.random() * 2 + 3 + "s";
         document.body.appendChild(heart);
-
         setTimeout(() => heart.remove(), 5000);
-      }, 300);
+      }, 260);
 
       setTimeout(() => clearInterval(interval), 6000);
     }
